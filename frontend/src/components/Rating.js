@@ -2,7 +2,6 @@ import React from 'react'
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarHalfIcon from '@material-ui/icons/StarHalf';
-import { Typography } from '@material-ui/core'
 
 const Rating = ({ rating, reviews }) => {
     return (

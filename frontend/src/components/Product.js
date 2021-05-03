@@ -7,7 +7,7 @@ import {
     CardActionArea
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
-import Rating from './Rating'
+import { Rating } from '@material-ui/lab';
 import { Link } from 'react-router-dom'
 
 
@@ -42,7 +42,14 @@ const Product = ({ product }) => {
                             {product.name}
                         </Link>
                     </Typography>
-                    <Rating rating={product.rating} />
+                    <Rating
+                        name="half-rating-read"
+                        size="small"
+                        defaultValue={product.rating}
+                        precision={0.5}
+                        style={{ marginBottom: 5 }}
+                        readOnly
+                    />
                     <Typography gutterBottom variant="h5">
                         ${product.price}
                     </Typography>

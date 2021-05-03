@@ -1,9 +1,24 @@
-import React from 'react'
-import products from '../data'
+import React, { useState, useEffect } from 'react'
 import Product from '../components/Product'
 import { Grid } from '@material-ui/core'
+import axios from 'axios'
 
 const Homescreen = () => {
+
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+
+        const getProducts = async () => {
+            const res = await axios.get('api/products')
+            console.log(res)
+            setProducts(res.data);
+        }
+
+        getProducts()
+
+    }, [])
+
     return (
         <React.Fragment>
             <h1 style={{ textTransform: 'uppercase', letterSpacing: 2, fontWeight: '500' }}>Latest Products</h1>

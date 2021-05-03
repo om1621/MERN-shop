@@ -21,11 +21,14 @@ const useStyles = makeStyles(() => ({
         letterSpacing: 2
     },
     btns: {
-        marginRight: 4,
+        marginLeft: 20
     },
     link: {
         textDecoration: 'none',
         color: 'inherit'
+    },
+    toolbar: {
+        padding: 0,
     }
 }));
 
@@ -38,17 +41,17 @@ const Navbar = () => {
         <div className={classes.root}>
             <AppBar position="static" color="transparent">
                 <Container>
-                    <Toolbar>
-                        <Typography variant="h6" className={classes.title}>
+                    <Toolbar className={classes.toolbar} >
+                        <Typography variant="h6" color="secondary" className={classes.title}>
                             <Link to='/' className={classes.link}>
                                 MernShop
                             </Link>
                         </Typography>
-                        <Link to='/signin' className={classes.link}>
-                            <Button color="inherit" className={classes.btns} startIcon={<ExitToAppIcon />}>SIGN IN</Button>
-                        </Link>
                         <Link to='/cart' className={classes.link}>
-                            <Button color="inherit" className={classes.btns} startIcon={<ShoppingCartIcon />}>CART</Button>
+                            <Button color="secondary" variant="outlined" className={classes.btns} startIcon={<ShoppingCartIcon />}>CART</Button>
+                        </Link>
+                        <Link to='/signin' className={classes.link}>
+                            <Button color="secondary" variant="contained" className={classes.btns} startIcon={<ExitToAppIcon />}>SIGN IN</Button>
                         </Link>
                     </Toolbar>
                 </Container>
