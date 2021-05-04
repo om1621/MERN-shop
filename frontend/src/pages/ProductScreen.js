@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import products from '../data'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import {
@@ -10,7 +9,8 @@ import {
     List,
     ListItem
 } from '@material-ui/core'
-import { Rating } from '@material-ui/lab';
+import { Rating } from '@material-ui/lab'
+import axios from 'axios'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +34,18 @@ const ProductScreen = ({ match }) => {
 
     const classes = useStyles();
 
-    const product = products.find(p => p._id === match.params.id)
+    const [product, setProduct] = useState({ rating: 0 })
+
+    useEffect(() => {
+        const getProduct = async () => {
+            const { data } = await axios.get(`/api/products/${match.params.id}`)
+
+            setProduct(data)
+            console.log(data)
+        }
+
+        getProduct()
+    }, [match])
 
     return (
         <React.Fragment>
@@ -59,7 +70,7 @@ const ProductScreen = ({ match }) => {
                             </Typography>
                         </ListItem>
                         <ListItem divider={true}>
-                            <Rating name="half-rating-read" defaultValue={product.rating} precision={0.5} readOnly />
+                            <Rating name="half-rating-read" defaultValue={0} value={product.rating} precision={0.5} readOnly />
                         </ListItem>
                         <ListItem>
                             <Typography variant='body1'>

@@ -45,7 +45,8 @@ const Product = ({ product }) => {
                     <Rating
                         name="half-rating-read"
                         size="small"
-                        defaultValue={product.rating}
+                        defaultValue={0}
+                        value={product.rating}
                         precision={0.5}
                         style={{ marginBottom: 5 }}
                         readOnly

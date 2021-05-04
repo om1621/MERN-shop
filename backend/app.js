@@ -1,24 +1,14 @@
 const express = require('express')
 const dotenv = require('dotenv')
-const products = require('./data/data')
 const connectDB = require('./db/db')
+const productRoutes = require('./routes/productRoutes')
 
 dotenv.config()
+connectDB();
 
 const app = express()
 
-connectDB();
-
-app.get('/api/products', (req, res) => {
-    res.json(products)
-})
-
-app.get('/api/products/:id', (req, res) => {
-    const id = req.params.id
-    const product = products.find((p) => p._id === id)
-
-    res.json(product)
-})
+app.use('/api/products', productRoutes)
 
 const PORT = process.env.PORT || 5000
 
