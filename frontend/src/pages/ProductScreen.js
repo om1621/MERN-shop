@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import {
@@ -10,8 +10,10 @@ import {
     ListItem
 } from '@material-ui/core'
 import { Rating } from '@material-ui/lab'
-import axios from 'axios'
-
+import { useDispatch, useSelector } from 'react-redux'
+import { getProuctDetails } from '../actions/productActions'
+import Loader from '../components/Loader'
+import Error from '../components/Error'
 
 const useStyles = makeStyles((theme) => ({
     link: {
@@ -32,54 +34,55 @@ const useStyles = makeStyles((theme) => ({
 
 const ProductScreen = ({ match }) => {
 
-    const classes = useStyles();
+    const classes = useStyles()
 
-    const [product, setProduct] = useState({ rating: 0 })
+    const dispatch = useDispatch()
+
+    const productDetails = useSelector(state => state.productDetails)
+
+    const { loading, product, error } = productDetails
 
     useEffect(() => {
-        const getProduct = async () => {
-            const { data } = await axios.get(`/api/products/${match.params.id}`)
-
-            setProduct(data)
-            console.log(data)
-        }
-
-        getProduct()
-    }, [match])
+        dispatch(getProuctDetails(match.params.id))
+    }, [dispatch])
 
     return (
         <React.Fragment>
             <Link to='/' className={classes.link}>
                 <Button color="inherit">Go Back</Button>
             </Link>
+            {
+                loading ? <Loader /> :
+                    error ? <Error err={error} /> :
+                        <Grid container spacing={5} className={classes.grid} >
+                            <Grid item md={6}>
+                                <CardMedia component='img' src={product.image} />
+                            </Grid>
+                            <Grid item md={3}>
+                                <List>
+                                    <ListItem divider={true}>
+                                        <Typography variant='h5'>
+                                            {product.name}
+                                        </Typography>
+                                    </ListItem>
+                                    <ListItem divider={true}>
+                                        <Typography variant='subtitle1'>
+                                            Price: ${product.price}
+                                        </Typography>
+                                    </ListItem>
+                                    <ListItem divider={true}>
+                                        <Rating name="half-rating-read" defaultValue={0} value={product.rating} precision={0.5} readOnly />
+                                    </ListItem>
+                                    <ListItem>
+                                        <Typography variant='body1'>
+                                            {product.description}
+                                        </Typography>
+                                    </ListItem>
+                                </List>
+                            </Grid>
+                        </Grid>
+            }
 
-            <Grid container spacing={5} className={classes.grid} >
-                <Grid item md={6}>
-                    <CardMedia component='img' src={product.image} />
-                </Grid>
-                <Grid item md={3}>
-                    <List>
-                        <ListItem divider={true}>
-                            <Typography variant='h5'>
-                                {product.name}
-                            </Typography>
-                        </ListItem>
-                        <ListItem divider={true}>
-                            <Typography variant='subtitle1'>
-                                Price: ${product.price}
-                            </Typography>
-                        </ListItem>
-                        <ListItem divider={true}>
-                            <Rating name="half-rating-read" defaultValue={0} value={product.rating} precision={0.5} readOnly />
-                        </ListItem>
-                        <ListItem>
-                            <Typography variant='body1'>
-                                {product.description}
-                            </Typography>
-                        </ListItem>
-                    </List>
-                </Grid>
-            </Grid>
         </React.Fragment>
     )
 }
