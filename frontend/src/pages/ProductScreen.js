@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import {
@@ -7,13 +7,16 @@ import {
     CardMedia,
     Typography,
     List,
-    ListItem
+    ListItem,
+    FormControl,
+    Select,
+    MenuItem
 } from '@material-ui/core'
 import { Rating } from '@material-ui/lab'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProuctDetails } from '../actions/productActions'
 import Loader from '../components/Loader'
-import Error from '../components/Error'
+import Message from '../components/Message'
 
 const useStyles = makeStyles((theme) => ({
     link: {
@@ -32,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const ProductScreen = ({ match }) => {
+const ProductScreen = ({ match, history }) => {
 
     const classes = useStyles()
 
@@ -42,9 +45,19 @@ const ProductScreen = ({ match }) => {
 
     const { loading, product, error } = productDetails
 
+    const handleQuantityChange = (e) => {
+        setQuantity(e.target.value)
+    }
+
     useEffect(() => {
         dispatch(getProuctDetails(match.params.id))
-    }, [dispatch])
+    }, [match, dispatch])
+
+    const [quantity, setQuantity] = useState(1)
+
+    const addToCart = () => {
+        history.push(`/cart/${product._id}?qty=${quantity}`)
+    }
 
     return (
         <React.Fragment>
@@ -53,7 +66,7 @@ const ProductScreen = ({ match }) => {
             </Link>
             {
                 loading ? <Loader /> :
-                    error ? <Error err={error} /> :
+                    error ? <Message type="error" msg={error} /> :
                         <Grid container spacing={5} className={classes.grid} >
                             <Grid item md={6}>
                                 <CardMedia component='img' src={product.image} />
@@ -75,8 +88,72 @@ const ProductScreen = ({ match }) => {
                                     </ListItem>
                                     <ListItem>
                                         <Typography variant='body1'>
-                                            {product.description}
+                                            Description: {product.description}
                                         </Typography>
+                                    </ListItem>
+                                </List>
+                            </Grid>
+                            <Grid item md={3}>
+                                <List style={{ border: '1px solid rgba(0, 0, 0, 0.12)' }}>
+                                    <ListItem divider={true}>
+                                        <Grid container>
+                                            <Grid item xs={6}>
+                                                <Typography variant='body1'>
+                                                    Price:
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item xs={6}>
+                                                <Typography variant='body1'>
+                                                    {product.price}
+                                                </Typography>
+                                            </Grid>
+                                        </Grid>
+                                    </ListItem>
+                                    <ListItem divider={true}>
+                                        <Grid container>
+                                            <Grid item xs={6}>
+                                                <Typography variant='body1'>
+                                                    Status:
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item xs={6}>
+                                                <Typography variant='body1'>
+                                                    {product.countInStock > 0 ? 'In Stock' : 'out of stock'}
+                                                </Typography>
+                                            </Grid>
+                                        </Grid>
+                                    </ListItem>
+                                    {product.countInStock > 0 &&
+                                        <ListItem divider={true}>
+                                            <Grid container>
+                                                <Grid item xs={6}>
+                                                    <Typography variant='body1'>
+                                                        Qty:
+                                            </Typography>
+                                                </Grid>
+                                                <Grid item xs={6}>
+                                                    <FormControl variant="filled">
+                                                        <Select
+                                                            labelId="demo-simple-select-filled-label"
+                                                            id="demo-simple-select-filled"
+                                                            value={quantity}
+                                                            onChange={handleQuantityChange}
+                                                        >
+                                                            {
+                                                                Array.from(Array(product.countInStock), (e, i) => {
+                                                                    return (<MenuItem key={i + 1} value={i + 1}>{i + 1}</MenuItem>)
+                                                                })
+                                                            }
+                                                        </Select>
+                                                    </FormControl>
+                                                </Grid>
+                                            </Grid>
+                                        </ListItem>
+                                    }
+                                    <ListItem style={{ justifyContent: 'center' }}>
+                                        <Button color='secondary' variant='contained' disabled={product.countInStock === 0} onClick={addToCart}>
+                                            add to cart
+                                        </Button>
                                     </ListItem>
                                 </List>
                             </Grid>
