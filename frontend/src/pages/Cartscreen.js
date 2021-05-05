@@ -17,23 +17,13 @@ import {
 import { Link } from 'react-router-dom'
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const Cartscreen = ({ match, location }) => {
+const Cartscreen = ({ }) => {
 
     const dispatch = useDispatch()
-
-    const productId = match.params.id
-
-    const quantity = location.search ? Number(location.search.split('=')[1]) : 1
 
     const cart = useSelector(state => state.cart)
 
     const { cartItems } = cart
-
-    useEffect(() => {
-        if (productId) {
-            dispatch(addItemToCart(productId, quantity))
-        }
-    }, [dispatch, productId, quantity])
 
     const removeItem = (id) => {
         dispatch(removeItemFromCart(id))

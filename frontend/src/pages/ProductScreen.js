@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getProuctDetails } from '../actions/productActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import { addItemToCart } from '../actions/cartActions'
 
 const useStyles = makeStyles((theme) => ({
     link: {
@@ -56,7 +57,8 @@ const ProductScreen = ({ match, history }) => {
     const [quantity, setQuantity] = useState(1)
 
     const addToCart = () => {
-        history.push(`/cart/${product._id}?qty=${quantity}`)
+        dispatch(addItemToCart(product._id, quantity))
+        history.push(`/cart`)
     }
 
     return (
