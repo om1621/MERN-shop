@@ -20,7 +20,7 @@ const Homescreen = () => {
 
     return (
         <React.Fragment>
-            <h1 style={{ textTransform: 'uppercase', letterSpacing: 2, fontWeight: '500' }}>Latest Products</h1>
+            <h1 style={{ textTransform: 'uppercase', letterSpacing: 2, fontWeight: '500', color: '#585858' }}>Latest Products</h1>
             {
                 loading ? <Loader /> :
                     error ? <Message type="error" msg={error} /> :
