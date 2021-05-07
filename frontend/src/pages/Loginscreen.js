@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     TextField,
     Button,
@@ -8,10 +8,14 @@ import {
     InputLabel,
     FormControl,
     Typography,
+    CircularProgress,
+    FormHelperText
 } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
+import { userLoginAction } from '../actions/userActions'
+import { useDispatch, useSelector } from 'react-redux'
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -35,17 +39,33 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-function Loginscreen() {
+function Loginscreen({ history }) {
 
-    const classes = useStyles();
+    const classes = useStyles()
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [showPassword, setShowPassword] = useState(false)
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+
+    const dispatch = useDispatch()
+
+    const user = useSelector((state) => state.userLogin)
+
+    const { loading, userInfo, error } = user
+
+    useEffect(() => {
+        if (userInfo) {
+            history.push('/')
+        }
+    }, [userInfo, history])
+
+    const checkUser = () => {
+        dispatch(userLoginAction(email, password))
+    }
 
 
     return (
@@ -58,24 +78,28 @@ function Loginscreen() {
                         label="Email"
                         variant="outlined"
                         value={email}
-                        placeholder="abc@gmail.com"
+                        placeholder="Michael@dunderMifflin.com"
                         fullWidth={true}
                         onChange={(e) => setEmail(e.target.value)}
+                        helperText={error ? error.email : ''}
+                        error={error && error.email !== ''}
                         className={classes.input__box}
                     />
                     <FormControl fullWidth={true}>
                         <InputLabel
                             htmlFor="outlined-adornment-password"
                             className="MuiInputLabel-outlined"
+                            error={error && error.password !== ''}
                         >
                             Password
                         </InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-password"
                             type={showPassword ? 'text' : 'password'}
-                            placeholder="test123"
+                            placeholder="scott123"
                             label="Password"
                             value={password}
+                            error={error && error.password !== ''}
                             fullWidth={true}
                             onChange={(e) => setPassword(e.target.value)}
                             endAdornment={
@@ -91,14 +115,17 @@ function Loginscreen() {
                                 </InputAdornment>
                             }
                         />
+                        <FormHelperText id="my-helper-text" error={error && error.password !== ''}>{error ? error.password : ''}</FormHelperText>
 
                     </FormControl>
                     <Button
                         variant="contained"
                         color="secondary"
                         size="large"
+                        onClick={checkUser}
                     >
-                        sign in
+                        {loading && <CircularProgress color="inherit" size={20} />}
+                        &nbsp;sign in
                     </Button>
                     <Link to='/signup' className='link'>
                         <Typography variant="subtitle2" className={classes.signup}>

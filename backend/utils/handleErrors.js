@@ -1,6 +1,7 @@
 const handleErrors = (err) => {
 
     const errorData = {
+        type: 'error',
         email: '',
         password: ''
     }

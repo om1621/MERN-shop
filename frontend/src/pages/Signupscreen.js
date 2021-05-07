@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     TextField,
     Button,
@@ -8,10 +8,14 @@ import {
     InputLabel,
     FormControl,
     Typography,
+    CircularProgress,
+    FormHelperText
 } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { userSignupAction } from '../actions/userActions'
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -35,18 +39,34 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-function Signupscreen() {
+function Signupscreen({ history }) {
 
-    const classes = useStyles();
+    const classes = useStyles()
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [showPassword, setShowPassword] = useState(false)
 
     const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
+        event.preventDefault()
+    }
 
+    const dispatch = useDispatch()
+
+    const userSignup = useSelector(state => state.userSignup)
+
+    const { loading, user, error } = userSignup
+
+    useEffect(() => {
+        if (user) {
+            history.push('/')
+        }
+    }, [user, history])
+
+    const checkUser = () => {
+        dispatch(userSignupAction(name, email, password))
+    }
 
     return (
         <React.Fragment>
@@ -54,28 +74,42 @@ function Signupscreen() {
             <form className={classes.root}>
                 <div>
                     <TextField
-                        id="outlined-error-helper-text"
+                        id="name-input"
+                        label="Name"
+                        variant="outlined"
+                        value={name}
+                        placeholder="Micahel Scott"
+                        fullWidth={true}
+                        onChange={(e) => setName(e.target.value)}
+                        className={classes.input__box}
+                    />
+                    <TextField
+                        id="email-input"
                         label="Email"
                         variant="outlined"
                         value={email}
-                        placeholder="abc@gmail.com"
+                        placeholder="Michael@dunderMifflin.com"
                         fullWidth={true}
                         onChange={(e) => setEmail(e.target.value)}
+                        helperText={error ? error.email : ''}
+                        error={error && error.email !== ''}
                         className={classes.input__box}
                     />
                     <FormControl fullWidth={true}>
                         <InputLabel
                             htmlFor="outlined-adornment-password"
                             className="MuiInputLabel-outlined"
+                            error={error && error.password !== ''}
                         >
                             Password
-                        </InputLabel>
+                    </InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-password"
                             type={showPassword ? 'text' : 'password'}
-                            placeholder="test123"
+                            placeholder="scott123"
                             label="Password"
                             value={password}
+                            error={error && error.password !== ''}
                             fullWidth={true}
                             onChange={(e) => setPassword(e.target.value)}
                             endAdornment={
@@ -91,14 +125,17 @@ function Signupscreen() {
                                 </InputAdornment>
                             }
                         />
+                        <FormHelperText id="my-helper-text" error={error && error.password !== ''}>{error ? error.password : ''}</FormHelperText>
 
                     </FormControl>
                     <Button
                         variant="contained"
                         color="secondary"
                         size="large"
+                        onClick={checkUser}
                     >
-                        sign up
+                        {loading && <CircularProgress color="inherit" size={20} />}
+                        &nbsp;sign up
                     </Button>
                     <Link to='/signin' className='link'>
                         <Typography variant="subtitle2" className={classes.signup}>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addItemToCart, removeItemFromCart } from '../actions/cartActions'
 import Message from '../components/Message'
@@ -17,7 +17,7 @@ import {
 import { Link } from 'react-router-dom'
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const Cartscreen = ({ }) => {
+const Cartscreen = () => {
 
     const dispatch = useDispatch()
 
