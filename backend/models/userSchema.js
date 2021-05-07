@@ -1,5 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+const { isEmail } = require('validator')
 
 const { Schema } = mongoose;
 
@@ -10,12 +11,14 @@ const userSchema = new Schema({
     },
     email: {
         type: String,
-        required: true,
-        unique: true
+        required: [true, 'please enter email'],
+        unique: true,
+        validate: [isEmail, 'please enter valid email']
     },
     password: {
         type: String,
-        required: true,
+        required: [true, 'please enter password'],
+        minLength: [6, 'Minimum valid length for password is 6']
     },
     isAdmin: {
         type: Boolean,
@@ -25,6 +28,13 @@ const userSchema = new Schema({
 
 }, {
     timestamps: true,
+})
+
+// pre is a mongoose middelware, thus next() called
+userSchema.pre('save', async function (next) {
+    const salt = await bcrypt.genSalt()
+    this.password = await bcrypt.hash(this.password, salt)
+    next()
 })
 
 userSchema.statics.login = async function (email, password) {
