@@ -10,6 +10,7 @@ import { Container } from '@material-ui/core'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import useCheckUser from './hooks/useCheckUser'
 import PageLoader from './components/PageLoader'
+import PrivateRoute from './pages/PrivateRoute'
 
 function App() {
 
@@ -32,7 +33,7 @@ function App() {
         <Route path='/cart/:id?' component={Cartscreen} />
         <Route path='/signin' component={Loginscreen} />
         <Route path='/signup' component={Signupscreen} />
-        <Route path='/profile' component={Profilescreen} />
+        <PrivateRoute path='/profile' component={Profilescreen} />
       </Container>
     </Router>
   )

@@ -73,7 +73,7 @@ function Signupscreen({ history }) {
 
     return (
         <React.Fragment>
-            <Heading headingText="Sign Up" />
+            <Heading headingText="Sign Up" align="center" />
             <form className={classes.root}>
                 <div>
                     <TextField

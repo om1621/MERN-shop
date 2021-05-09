@@ -71,7 +71,7 @@ function Loginscreen({ history }) {
 
     return (
         <React.Fragment>
-            <Heading headingText="Sign In" />
+            <Heading headingText="Sign In" align="center" />
             <form className={classes.root}>
                 <div>
                     <TextField
