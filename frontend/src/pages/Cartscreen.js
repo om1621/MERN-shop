@@ -18,16 +18,28 @@ import { Link } from 'react-router-dom'
 import DeleteIcon from '@material-ui/icons/Delete';
 import Heading from '../components/Heading'
 
-const Cartscreen = () => {
+const Cartscreen = ({ history }) => {
 
     const dispatch = useDispatch()
 
     const cart = useSelector(state => state.cart)
-
     const { cartItems } = cart
+
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
 
     const removeItem = (id) => {
         dispatch(removeItemFromCart(id))
+    }
+
+    const checkout = () => {
+        if (userInfo) {
+            history.push('/shipping')
+        }
+        else {
+            history.push('/signin')
+        }
+
     }
 
     return (
@@ -99,7 +111,7 @@ const Cartscreen = () => {
                                     </Typography>
                                 </ListItem>
                                 <ListItem style={{ justifyContent: 'center' }}>
-                                    <Button variant='contained'>
+                                    <Button variant='contained' color='secondary' onClick={checkout}>
                                         Checkout
                                     </Button>
                                 </ListItem>

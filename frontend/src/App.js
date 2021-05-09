@@ -6,6 +6,7 @@ import Cartscreen from './pages/Cartscreen'
 import Loginscreen from './pages/Loginscreen'
 import Signupscreen from './pages/Signupscreen'
 import Profilescreen from './pages/Profilescreen'
+import Shippingscreen from './pages/Shippingscreen'
 import { Container } from '@material-ui/core'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import useCheckUser from './hooks/useCheckUser'
@@ -34,6 +35,7 @@ function App() {
         <Route path='/signin' component={Loginscreen} />
         <Route path='/signup' component={Signupscreen} />
         <PrivateRoute path='/profile' component={Profilescreen} />
+        <PrivateRoute path='/shipping' component={Shippingscreen} />
       </Container>
     </Router>
   )
