@@ -1,15 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import {
     AppBar,
     Toolbar,
     Typography,
     Button,
-    Container
+    Container,
+    Menu,
+    MenuItem
 } from '@material-ui/core';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { Link } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { userLogoutAction } from '../actions/userActions'
+
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -35,7 +41,27 @@ const useStyles = makeStyles(() => ({
 
 const Navbar = () => {
 
-    const classes = useStyles();
+    const classes = useStyles()
+
+    const dispatch = useDispatch()
+
+    const userLogin = useSelector((state) => state.userLogin)
+
+    const { userInfo } = userLogin
+
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget)
+    }
+
+    const handleClose = () => {
+        setAnchorEl(null)
+    }
+
+    const userLogout = () => {
+        dispatch(userLogoutAction())
+    }
 
     return (
         <div className={classes.root}>
@@ -48,11 +74,54 @@ const Navbar = () => {
                             </Link>
                         </Typography>
                         <Link to='/cart' className={classes.link}>
-                            <Button color="secondary" variant="outlined" className={classes.btns} startIcon={<ShoppingCartIcon />}>CART</Button>
+                            <Button
+                                color="secondary"
+                                variant="outlined"
+                                className={classes.btns}
+                                startIcon={<ShoppingCartIcon />}
+                            >
+                                CART
+                            </Button>
                         </Link>
-                        <Link to='/signin' className={classes.link}>
-                            <Button color="secondary" variant="contained" className={classes.btns} startIcon={<ExitToAppIcon />}>SIGN IN</Button>
-                        </Link>
+                        {!userInfo &&
+                            <Link to='/signin' className={classes.link}>
+                                <Button
+                                    color="secondary"
+                                    variant="contained"
+                                    className={classes.btns}
+                                    startIcon={<ExitToAppIcon />}
+                                >
+                                    SIGN IN
+                                </Button>
+                            </Link>
+                        }
+                        {userInfo &&
+                            <React.Fragment>
+                                <Button
+                                    aria-controls="simple-menu"
+                                    className={classes.btns}
+                                    aria-haspopup="true"
+                                    onClick={handleClick}
+                                    endIcon={<ArrowDropDownIcon color='secondary' style={{ fontSize: '26px' }} />}
+                                >
+                                    <Typography variant="button" color="secondary">
+                                        {userInfo.name}
+                                    </Typography>
+                                </Button>
+                                <Menu
+                                    id="simple-menu"
+                                    anchorEl={anchorEl}
+                                    keepMounted
+                                    open={Boolean(anchorEl)}
+                                    onClose={handleClose}
+                                >
+                                    <Link to='/profile' className={classes.link}>
+                                        <MenuItem>Profile</MenuItem>
+                                    </Link>
+                                    <MenuItem onClick={userLogout}>Logout</MenuItem>
+                                </Menu>
+                            </React.Fragment>
+                        }
                     </Toolbar>
                 </Container>
             </AppBar>

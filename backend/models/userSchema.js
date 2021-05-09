@@ -32,6 +32,11 @@ const userSchema = new Schema({
 
 // pre is a mongoose middelware, thus next() called
 userSchema.pre('save', async function (next) {
+
+    if (!this.isModified('password')) {
+        next()
+    }
+
     const salt = await bcrypt.genSalt()
     this.password = await bcrypt.hash(this.password, salt)
     next()

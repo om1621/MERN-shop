@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getProuctList } from '../actions/productActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import Heading from '../components/Heading'
 
 
 const Homescreen = () => {
@@ -20,14 +21,14 @@ const Homescreen = () => {
 
     return (
         <React.Fragment>
-            <h1 style={{ textTransform: 'uppercase', letterSpacing: 2, fontWeight: '500', color: '#585858' }}>Latest Products</h1>
+            <Heading headingText='Latest Products' />
             {
                 loading ? <Loader /> :
                     error ? <Message type="error" msg={error} /> :
                         <Grid container spacing={5} >
                             {products.map((product) => (
                                 <Grid item xs={12} sm={6} md={4} lg={3}>
-                                    <Product key={product.id} product={product} />
+                                    <Product key={product._id} product={product} />
                                 </Grid>
                             ))}
                         </Grid>

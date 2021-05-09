@@ -67,4 +67,38 @@ const getCurrentUser = async (req, res) => {
     }
 }
 
-module.exports = { userAuthentication, createUser, getCurrentUser }
+// @desc   logout current user
+// @route  /api/user/logout
+// @access Private
+const logoutUser = (req, res) => {
+    res.cookie('jwt', 'cookieExpired', { httpOnly: true, maxAge: 1000 })
+    res.json({ success: true, message: 'user successfully logged out' })
+}
+
+// @desc   update user profile
+// @route  /api/user
+// @access Private
+const updateUser = async (req, res) => {
+    const id = req.body._id
+
+    try {
+        const user = await User.findById(id)
+
+        user.name = req.body.name || user.name
+        user.email = req.body.email || user.email
+        if (req.body.password) {
+            user.password = req.body.password
+        }
+
+        const updatedUser = await user.save()
+
+        res.json(updatedUser)
+    }
+    catch (err) {
+        console.log(err)
+        const errorData = handleErrors(err)
+        res.status(404).json(errorData)
+    }
+}
+
+module.exports = { userAuthentication, createUser, getCurrentUser, logoutUser, updateUser }

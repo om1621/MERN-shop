@@ -16,6 +16,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import { userLoginAction } from '../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
+import Heading from '../components/Heading'
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -70,7 +71,7 @@ function Loginscreen({ history }) {
 
     return (
         <React.Fragment>
-            <h1 style={{ textTransform: 'uppercase', letterSpacing: 2, fontWeight: '500', textAlign: 'center', color: '#585858' }}>Sign In</h1>
+            <Heading headingText="Sign In" />
             <form className={classes.root}>
                 <div>
                     <TextField
@@ -125,7 +126,7 @@ function Loginscreen({ history }) {
                         onClick={checkUser}
                     >
                         {loading && <CircularProgress color="inherit" size={20} />}
-                        &nbsp;sign in
+                         &nbsp;sign in
                     </Button>
                     <Link to='/signup' className='link'>
                         <Typography variant="subtitle2" className={classes.signup}>

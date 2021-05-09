@@ -16,6 +16,7 @@ import {
 } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import DeleteIcon from '@material-ui/icons/Delete';
+import Heading from '../components/Heading'
 
 const Cartscreen = () => {
 
@@ -31,8 +32,7 @@ const Cartscreen = () => {
 
     return (
         <React.Fragment>
-            <h1 style={{ textTransform: 'uppercase', letterSpacing: 2, fontWeight: '500', color: '#585858' }}>CART ITEMS</h1>
-
+            <Heading headingText="Cart Items" />
             {
                 cartItems.length === 0 ?
                     <Message type="info" msg="cart is empty!" /> :

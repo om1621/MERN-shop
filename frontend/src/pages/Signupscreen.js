@@ -16,6 +16,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { userSignupAction } from '../actions/userActions'
+import Heading from '../components/Heading'
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -55,14 +56,16 @@ function Signupscreen({ history }) {
     const dispatch = useDispatch()
 
     const userSignup = useSelector(state => state.userSignup)
+    const userLogin = useSelector(state => state.userLogin)
 
-    const { loading, user, error } = userSignup
+    const { loading, error } = userSignup
+    const { userInfo } = userLogin
 
     useEffect(() => {
-        if (user) {
+        if (userInfo) {
             history.push('/')
         }
-    }, [user, history])
+    }, [userInfo, history])
 
     const checkUser = () => {
         dispatch(userSignupAction(name, email, password))
@@ -70,7 +73,7 @@ function Signupscreen({ history }) {
 
     return (
         <React.Fragment>
-            <h1 style={{ textTransform: 'uppercase', letterSpacing: 2, fontWeight: '500', textAlign: 'center', color: '#585858' }}>Sign Up</h1>
+            <Heading headingText="Sign Up" />
             <form className={classes.root}>
                 <div>
                     <TextField
