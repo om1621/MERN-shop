@@ -34,7 +34,7 @@ const Cartscreen = ({ history }) => {
 
     const checkout = () => {
         if (userInfo) {
-            history.push('/shipping')
+            history.push('/checkout')
         }
         else {
             history.push('/signin')
@@ -49,7 +49,7 @@ const Cartscreen = ({ history }) => {
                 cartItems.length === 0 ?
                     <Message type="info" msg="cart is empty!" /> :
                     <Grid container spacing={5}>
-                        <Grid item md={8}>
+                        <Grid item xs={12} md={8}>
                             <List>
                                 {
                                     cartItems.map((Item, i) => {
@@ -100,7 +100,7 @@ const Cartscreen = ({ history }) => {
 
                             </List>
                         </Grid>
-                        <Grid item md={4}>
+                        <Grid item xs={12} md={4}>
                             <List style={{ border: '1px solid rgba(0, 0, 0, 0.12)' }}>
                                 <ListItem divider={true} style={{ justifyContent: 'space-between' }}>
                                     <Typography variant='button'>

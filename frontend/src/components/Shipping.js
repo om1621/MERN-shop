@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Heading from '../components/Heading'
+import Heading from './Heading'
 import { makeStyles } from '@material-ui/core/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -30,7 +30,7 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-const Shippingscreen = () => {
+const Shipping = ({ handleNext }) => {
 
     const classes = useStyles()
 
@@ -47,11 +47,11 @@ const Shippingscreen = () => {
 
     const saveShippingAddress = () => {
         dispatch(addShippingAddress({ address, city, pinCode, country }))
+        handleNext()
     }
 
     return (
         <React.Fragment>
-            <Heading headingText="Shipping Details" align="center" />
             <form className={classes.root}>
                 <div>
                     <TextField
@@ -103,4 +103,4 @@ const Shippingscreen = () => {
     )
 }
 
-export default Shippingscreen
+export default Shipping

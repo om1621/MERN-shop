@@ -16,8 +16,6 @@ const useCheckUser = () => {
 
             const data = await res.json()
 
-            console.log(data)
-
             if (data) {
                 dispatch({
                     type: USER_LOGIN_SUCCESS,

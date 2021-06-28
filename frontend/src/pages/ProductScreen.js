@@ -70,10 +70,10 @@ const ProductScreen = ({ match, history }) => {
                 loading ? <Loader /> :
                     error ? <Message type="error" msg={error} /> :
                         <Grid container spacing={5} className={classes.grid} >
-                            <Grid item md={6}>
+                            <Grid item xs={12} md={6}>
                                 <CardMedia component='img' src={product.image} />
                             </Grid>
-                            <Grid item md={3}>
+                            <Grid item xs={12} md={3}>
                                 <List>
                                     <ListItem divider={true}>
                                         <Typography variant='h5'>
@@ -95,7 +95,7 @@ const ProductScreen = ({ match, history }) => {
                                     </ListItem>
                                 </List>
                             </Grid>
-                            <Grid item md={3}>
+                            <Grid item xs={12} md={3}>
                                 <List style={{ border: '1px solid rgba(0, 0, 0, 0.12)' }}>
                                     <ListItem divider={true}>
                                         <Grid container>

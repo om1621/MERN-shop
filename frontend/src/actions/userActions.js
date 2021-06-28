@@ -8,7 +8,7 @@ import {
     USER_SIGNUP_WAITING,
     USER_UPDATE_FAIL,
     USER_UPDATE_SUCCESS,
-    USER_UPDATE_WAITING
+    USER_UPDATE_WAITING,
 } from './actionTypes'
 
 export const userLoginAction = (email, password) => async (dispatch) => {
